@@ -1,0 +1,25 @@
+services:
+  ttp:
+    build: .
+    command: python -m worker --rank 0 --world_size 3 --target tasks.ttp:run_ttp
+    environment:
+      - MASTER_ADDR=ttp
+      - MASTER_PORT=29500
+
+  worker1:
+    build: .
+    command: python -m worker --rank 1 --world_size 3 --target tasks.mpc_compare:compare_protocol
+    environment:
+      - MASTER_ADDR=ttp
+      - MASTER_PORT=29500
+      - A_VALUE=24325
+      - MAX_DIGIT=16 # A_VALUE, B_VALUE < 2 ** MAX_DIGIT
+
+  worker2:
+    build: .
+    command: python -m worker --rank 2 --world_size 3 --target tasks.mpc_compare:compare_protocol
+    environment:
+      - MASTER_ADDR=ttp
+      - MASTER_PORT=29500
+      - B_VALUE=5465
+      - MAX_DIGIT=16 # A_VALUE, B_VALUE < 2 ** MAX_DIGIT

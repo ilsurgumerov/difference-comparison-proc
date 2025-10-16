@@ -8,8 +8,13 @@ class PartyState:
         self.rank = rank
         self.world_size = world_size
         self.ell = ell
-        self.mod = 1 << ell
-        self.local = {}
+        self.term = None
+        self.term1 = None
+        self.term2 = None
+        self.term_shared_xor = None
+        self.term_shared_and = None
+        self.term_bits = None
+    
 
     def set(self, name, value):
         self.local[name] = value
